@@ -13,26 +13,12 @@ class NetworkingClient {
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .build()
-        )
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(10, TimeUnit.SECONDS)
+                    .build()
+                )
             .build()
     }
-//
-//    fun providesOkHttpClient(): OkHttpClient {
-//        val client = OkHttpClient.Builder()
-//            .connectTimeout(10, TimeUnit.SECONDS)
-//            .writeTimeout(30, TimeUnit.SECONDS)
-//            .readTimeout(10, TimeUnit.SECONDS)
-//
-//        if (BuildConfig.DEBUG) {
-//            val logging = HttpLoggingInterceptor()
-//            logging.level = HttpLoggingInterceptor.Level.BODY
-//            client.addInterceptor(logging)
-//        }
-//
-//        return client.build()
-//    }
+
 }
