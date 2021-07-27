@@ -1,6 +1,7 @@
 package com.example.myvideocallapp
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,9 @@ class LoginActivity : AppCompatActivity() {
 
         vm.error.observe(this, { error -> showError(error) })
 
-        vm.authenticate("https://aniket.app.100ms.live/preview/snippy-purple-mouse", "cat")
+        findViewById<Button>(R.id.authenticateButton).setOnClickListener {
+            vm.authenticate("https://aniket.app.100ms.live/preview/snippy-purple-mouse", "cat")
+        }
     }
 
     private fun launchVideoRoomActivity(authToken : String?) {
