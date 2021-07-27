@@ -17,8 +17,9 @@ import java.net.URI
 class LoginViewModel : ViewModel() {
     private val TAG = "LoginViewModel"
 
-    val authToken = MutableLiveData<String>(null)
+    val authToken = MutableLiveData<String?>(null)
     val loading = MutableLiveData(false)
+    val error = MutableLiveData<String?>(null)
 
     fun authenticate(url : String, name : String) {
         viewModelScope.launch {
