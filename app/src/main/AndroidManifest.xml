@@ -10,9 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyVideoCallApp">
-        <activity
-            android:name=".LoginScreen"
-            android:exported="true" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">
