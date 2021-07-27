@@ -8,10 +8,8 @@ import com.example.myvideocallapp.api.HmsAuthTokenApi
 import com.example.myvideocallapp.api.TokenRequestWithCode
 import com.example.myvideocallapp.networking.NetworkingClient
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 import java.net.URI
 
 class LoginViewModel : ViewModel() {
@@ -44,7 +42,7 @@ class LoginViewModel : ViewModel() {
             .providesRetrofit()
             .create(HmsAuthTokenApi::class.java)
             .getAuthToken(subdomain, tokenRequest)
-        Log.d("AuthToken", token.token)
+        Log.d("AuthToken", "Token is ${token.token}")
         return@withContext token.token
     }
 

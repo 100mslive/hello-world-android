@@ -1,9 +1,9 @@
 package com.example.myvideocallapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -17,11 +17,13 @@ class LoginActivity : AppCompatActivity() {
             launchVideoRoomActivity(authToken)
         })
 
-        vm.loading.observe(this, {isLoading ->
+        vm.loading.observe(this, { isLoading ->
             setLoading(isLoading)
         })
 
-        vm.error.observe(this, {error -> showError(error)})
+        vm.error.observe(this, { error -> showError(error) })
+
+        vm.authenticate("https://aniket.app.100ms.live/preview/snippy-purple-mouse", "cat")
     }
 
     private fun launchVideoRoomActivity(authToken : String?) {
