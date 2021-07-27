@@ -15,6 +15,7 @@ import java.lang.Exception
 import java.net.URI
 
 class LoginViewModel : ViewModel() {
+    private val TAG = "LoginViewModel"
 
     val authToken = MutableLiveData<String>(null)
     val loading = MutableLiveData(false)
@@ -25,7 +26,10 @@ class LoginViewModel : ViewModel() {
             try {
                 val token = getAuthToken(url) // then launch the other activity.
                 authToken.postValue(token)
-            } finally {
+            } catch (e : Exception) {
+                Log.d(TAG, "An error occurred while getting the auth token $e")
+            }
+            finally {
                 loading.postValue(false)
             }
         }
