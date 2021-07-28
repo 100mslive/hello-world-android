@@ -1,5 +1,6 @@
 package com.example.myvideocallapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -32,6 +33,9 @@ class LoginActivity : AppCompatActivity() {
     private fun launchVideoRoomActivity(authToken : String?) {
         if(authToken != null) {
             // Launch the video room
+            startActivity(Intent(this, VideoCallActivity::class.java).apply {
+                putExtra(BUNDLE_AUTH_TOKEN, authToken)
+            })
         }
     }
 
