@@ -31,7 +31,7 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
     }
 
     override fun onError(error: HMSException) {
-        TODO("Not yet implemented")
+        Log.d(TAG, "Error $error")
     }
 
     override fun onJoin(room: HMSRoom) {
@@ -40,23 +40,20 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
     }
 
     override fun onMessageReceived(message: HMSMessage) {
-        TODO("Not yet implemented")
     }
 
     override fun onPeerUpdate(type: HMSPeerUpdate, peer: HMSPeer) {
-        TODO("Not yet implemented")
+        Log.d(TAG, "Peer ${peer.name} -> $type")
     }
 
     override fun onRoleChangeRequest(request: HMSRoleChangeRequest) {
-        TODO("Not yet implemented")
     }
 
     override fun onRoomUpdate(type: HMSRoomUpdate, hmsRoom: HMSRoom) {
-        TODO("Not yet implemented")
     }
 
     override fun onTrackUpdate(type: HMSTrackUpdate, track: HMSTrack, peer: HMSPeer) {
-        TODO("Not yet implemented")
+
     }
 
 
