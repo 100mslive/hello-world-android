@@ -26,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         vm.error.observe(this, { error -> showError(error) })
 
         findViewById<Button>(R.id.authenticateButton).setOnClickListener {
-            vm.authenticate("https://aniket.app.100ms.live/preview/snippy-purple-mouse", "cat")
+            vm.authenticate("https://aniket.app.100ms.live/meeting/snippy-purple-mouse", "cat")
         }
     }
 
