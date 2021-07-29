@@ -15,9 +15,14 @@ import live.hms.video.sdk.models.enums.HMSPeerUpdate
 import live.hms.video.sdk.models.enums.HMSRoomUpdate
 import live.hms.video.sdk.models.enums.HMSTrackUpdate
 
+data class TrackPeerMap(
+    val videoTrack: HMSVideoTrack?,
+    val peer: HMSPeer
+)
+
 sealed class RoomState {
     object Loading : RoomState()
-    data class Joined(val peerTracks: List<HMSVideoTrack>) : RoomState()
+    data class Joined(val peerTracks: List<TrackPeerMap>) : RoomState()
 }
 
 class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel(application),
@@ -33,7 +38,6 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
         .build()
 
     init {
-
         if (authKey != null) {
             Log.d(TAG, "Joining with $authKey")
             hmsSdk.join(HMSConfig("name", authKey), this)
@@ -45,7 +49,7 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
     }
 
     private fun getCurrentRoomState() =
-        RoomState.Joined(hmsSdk.getPeers().mapNotNull { it.videoTrack })
+        RoomState.Joined(hmsSdk.getPeers().map { TrackPeerMap(it.videoTrack, it) })
 
     override fun onJoin(room: HMSRoom) {
         // Room joined.

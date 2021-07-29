@@ -5,14 +5,15 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myvideocallapp.R
-import live.hms.video.media.tracks.HMSVideoTrack
+import com.example.myvideocallapp.TrackPeerMap
 import live.hms.video.utils.SharedEglContext
 import org.webrtc.RendererCommon
 import org.webrtc.SurfaceViewRenderer
 
-class PeerViewHolder(view: View, private val getItem: (Int) -> HMSVideoTrack) :
+class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
     RecyclerView.ViewHolder(view) {
     private val TAG = PeerViewHolder::class.java.simpleName
+    private var sinkAdded = false
 
     init {
         itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
@@ -24,24 +25,32 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> HMSVideoTrack) :
     fun startSurfaceView() {
         itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
             init(SharedEglContext.context, null)
-            getItem(adapterPosition).addSink(this)
+            getItem(adapterPosition).videoTrack?.let {
+                sinkAdded = true
+                it.addSink(this)
+            }
         }
     }
 
-    fun bind(peer: HMSVideoTrack) {
-
-        itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
-            peer.addSink(this)
+    fun bind(peer: TrackPeerMap) {
+        if (!sinkAdded) {
+            itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
+                peer.videoTrack?.let {
+                    sinkAdded = true
+                    it.addSink(this)
+                }
+            }
         }
 
-        itemView.findViewById<TextView>(R.id.peerName).text = peer.trackId
+        itemView.findViewById<TextView>(R.id.peerName).text = peer.peer.name
     }
 
     fun stopSurfaceView() {
         Log.d(TAG, "UNbinding")
         itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
-            if (adapterPosition != -1) {
-                getItem(adapterPosition).removeSink(this)
+
+            if (sinkAdded && adapterPosition != -1) {
+                getItem(adapterPosition).videoTrack?.removeSink(this)
             }
             release()
         }

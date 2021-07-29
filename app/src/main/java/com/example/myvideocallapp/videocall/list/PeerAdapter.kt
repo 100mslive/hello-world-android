@@ -5,21 +5,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.myvideocallapp.R
-import live.hms.video.media.tracks.HMSVideoTrack
+import com.example.myvideocallapp.TrackPeerMap
 
-class PeerAdapter : ListAdapter<HMSVideoTrack, PeerViewHolder>(DIFFUTIL_CALLBACK) {
+class PeerAdapter : ListAdapter<TrackPeerMap, PeerViewHolder>(DIFFUTIL_CALLBACK) {
 
     companion object {
-        val DIFFUTIL_CALLBACK = object : DiffUtil.ItemCallback<HMSVideoTrack>() {
+        val DIFFUTIL_CALLBACK = object : DiffUtil.ItemCallback<TrackPeerMap>() {
             override fun areItemsTheSame(
-                oldItem: HMSVideoTrack,
-                newItem: HMSVideoTrack
-            ) = oldItem.trackId == newItem.trackId
+                oldItem: TrackPeerMap,
+                newItem: TrackPeerMap
+            ) = oldItem.peer.peerID == newItem.peer.peerID
 
 
             override fun areContentsTheSame(
-                oldItem: HMSVideoTrack,
-                newItem: HMSVideoTrack
+                oldItem: TrackPeerMap,
+                newItem: TrackPeerMap
             ) =
                 oldItem == newItem
         }
