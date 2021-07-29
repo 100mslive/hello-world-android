@@ -25,7 +25,7 @@ sealed class RoomState {
     data class Joined(val peerTracks: List<TrackPeerMap>) : RoomState()
 }
 
-class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel(application),
+class VideoCallVm(authToken: String?, application: Application) : AndroidViewModel(application),
     HMSUpdateListener {
 
     private val _roomState = MutableLiveData<RoomState>(RoomState.Loading)
@@ -38,9 +38,11 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
         .build()
 
     init {
-        if (authKey != null) {
-            Log.d(TAG, "Joining with $authKey")
-            hmsSdk.join(HMSConfig("name", authKey), this)
+        if (authToken != null) {
+            Log.d(TAG, "Joining with $authToken")
+            hmsSdk.join(HMSConfig("name", authToken), this)
+        } else {
+            Log.e(TAG, "There was an error since the auth token was null.")
         }
     }
 
@@ -59,26 +61,31 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
         })
 
     override fun onJoin(room: HMSRoom) {
-        // Room joined.
+        // You joined the room.
+        _roomState.postValue(getCurrentRoomState())
+    }
+
+    override fun onTrackUpdate(type: HMSTrackUpdate, track: HMSTrack, peer: HMSPeer) {
+        // A peer has changed their video or audio sources.
+        // Might be starting a screenshare, muted or unmuted their audio or video.
+        // Note: The first time you join a chat, the peer joins before their video track is added.
+        // onTrackUpdate will always be called right after they join to get their video.
+        _roomState.postValue(getCurrentRoomState())
+    }
+
+    override fun onPeerUpdate(type: HMSPeerUpdate, peer: HMSPeer) {
+        // A peer has joined or left.
         _roomState.postValue(getCurrentRoomState())
     }
 
     override fun onMessageReceived(message: HMSMessage) {
-    }
-
-    override fun onPeerUpdate(type: HMSPeerUpdate, peer: HMSPeer) {
-//        Log.d(TAG, "Peer ${peer.name} -> $type")
-        _roomState.postValue(getCurrentRoomState())
+        // A chat message was received.
     }
 
     override fun onRoleChangeRequest(request: HMSRoleChangeRequest) {
     }
 
     override fun onRoomUpdate(type: HMSRoomUpdate, hmsRoom: HMSRoom) {
-    }
-
-    override fun onTrackUpdate(type: HMSTrackUpdate, track: HMSTrack, peer: HMSPeer) {
-        _roomState.postValue(getCurrentRoomState())
     }
 
 }
