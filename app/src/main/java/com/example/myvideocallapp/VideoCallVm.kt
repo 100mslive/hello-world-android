@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import live.hms.video.error.HMSException
 import live.hms.video.media.tracks.HMSTrack
+import live.hms.video.media.tracks.HMSVideoTrack
 import live.hms.video.sdk.HMSSDK
 import live.hms.video.sdk.HMSUpdateListener
 import live.hms.video.sdk.models.*
@@ -16,7 +17,7 @@ import live.hms.video.sdk.models.enums.HMSTrackUpdate
 
 sealed class RoomState {
     object Loading : RoomState()
-    data class Joined(val peers: List<HMSPeer>) : RoomState()
+    data class Joined(val peerTracks: List<HMSVideoTrack>) : RoomState()
 }
 
 class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel(application),
@@ -32,6 +33,7 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
         .build()
 
     init {
+
         if (authKey != null) {
             Log.d(TAG, "Joining with $authKey")
             hmsSdk.join(HMSConfig("name", authKey), this)
@@ -42,9 +44,12 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
         Log.d(TAG, "Error $error")
     }
 
+    private fun getCurrentRoomState() =
+        RoomState.Joined(hmsSdk.getPeers().mapNotNull { it.videoTrack })
+
     override fun onJoin(room: HMSRoom) {
         // Room joined.
-        _roomState.postValue(RoomState.Joined(room.peerList.asList()))
+        _roomState.postValue(getCurrentRoomState())
     }
 
     override fun onMessageReceived(message: HMSMessage) {
@@ -52,7 +57,7 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
 
     override fun onPeerUpdate(type: HMSPeerUpdate, peer: HMSPeer) {
 //        Log.d(TAG, "Peer ${peer.name} -> $type")
-        _roomState.postValue(RoomState.Joined(hmsSdk.getPeers().asList()))
+        _roomState.postValue(getCurrentRoomState())
     }
 
     override fun onRoleChangeRequest(request: HMSRoleChangeRequest) {
@@ -62,9 +67,7 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
     }
 
     override fun onTrackUpdate(type: HMSTrackUpdate, track: HMSTrack, peer: HMSPeer) {
-        _roomState.postValue(
-            RoomState.Joined(hmsSdk.getRemotePeers().asList())
-        )
+        _roomState.postValue(getCurrentRoomState())
     }
 
 }

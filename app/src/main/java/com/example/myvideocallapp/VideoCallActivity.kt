@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -35,12 +34,12 @@ class VideoCallActivity : AppCompatActivity() {
             adapter = peerAdapter
         }
 
-        vm.roomState.observe(this, Observer {
+        vm.roomState.observe(this, {
             when (it) {
                 RoomState.Loading -> Log.d(TAG, "is loading")
                 is RoomState.Joined -> {
-                    Log.d(TAG, "peers are ${it.peers.fold("") { msg, peer -> msg + peer.name }}")
-                    peerAdapter.submitList(it.peers)
+//                    Log.d(TAG, "peers are ${it.peers.fold("") { msg, peer -> msg + peer.name }}")
+                    peerAdapter.submitList(it.peerTracks)
                 }
             }
         })
