@@ -49,7 +49,14 @@ class VideoCallVm(authKey: String?, application: Application) : AndroidViewModel
     }
 
     private fun getCurrentRoomState() =
-        RoomState.Joined(hmsSdk.getPeers().map { TrackPeerMap(it.videoTrack, it) })
+        RoomState.Joined(hmsSdk.getPeers().flatMap {
+            val screenShare = it.auxiliaryTracks.find { auxTrack -> auxTrack is HMSVideoTrack }
+            if (screenShare is HMSVideoTrack) {
+                listOf(TrackPeerMap(it.videoTrack, it), TrackPeerMap(screenShare, it))
+            } else {
+                listOf(TrackPeerMap(it.videoTrack, it))
+            }
+        })
 
     override fun onJoin(room: HMSRoom) {
         // Room joined.
