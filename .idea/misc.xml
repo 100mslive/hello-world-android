@@ -6,6 +6,7 @@
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.121875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.146875" />
         <entry key="app/src/main/res/layout/activity_video_call.xml" value="0.14583333333333334" />
+        <entry key="app/src/main/res/layout/layout_peer_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/login_screen.xml" value="0.1" />
       </map>
     </option>
