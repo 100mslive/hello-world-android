@@ -53,6 +53,7 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
                 getItem(adapterPosition).videoTrack?.removeSink(this)
             }
             release()
+            sinkAdded = false
         }
     }
 }
