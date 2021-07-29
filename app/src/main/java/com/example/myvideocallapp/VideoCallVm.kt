@@ -20,6 +20,10 @@ data class TrackPeerMap(
     val peer: HMSPeer
 )
 
+/**
+ * This will be observed by the activity to decide whether to show the
+ * room or not.
+ */
 sealed class RoomState {
     object Loading : RoomState()
     data class Joined(val peerTracks: List<TrackPeerMap>) : RoomState()
@@ -46,19 +50,24 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
         }
     }
 
-    override fun onError(error: HMSException) {
-        Log.d(TAG, "Error $error")
-    }
-
-    private fun getCurrentRoomState() =
-        RoomState.Joined(hmsSdk.getPeers().flatMap {
+    private fun getCurrentRoomState(): RoomState.Joined {
+        // Convert all the peers into a map of them and their tracks.
+        val trackAndPeerMap = hmsSdk.getPeers().flatMap {
             val screenShare = it.auxiliaryTracks.find { auxTrack -> auxTrack is HMSVideoTrack }
             if (screenShare is HMSVideoTrack) {
                 listOf(TrackPeerMap(it.videoTrack, it), TrackPeerMap(screenShare, it))
             } else {
                 listOf(TrackPeerMap(it.videoTrack, it))
             }
-        })
+        }
+
+        return RoomState.Joined(trackAndPeerMap)
+    }
+
+
+    override fun onError(error: HMSException) {
+        Log.d(TAG, "Error $error")
+    }
 
     override fun onJoin(room: HMSRoom) {
         // You joined the room.

@@ -6,21 +6,56 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nameInputLayout"
+        android:layout_width="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        app:placeholderText="Name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameInputEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/urlInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/nameInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/nameInputLayout"
+        app:placeholderText="Name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/urlInputEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
+        android:layout_marginTop="16dp"
         android:id="@+id/authenticateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/authenticate"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/urlInputLayout"
+        app:layout_constraintTop_toBottomOf="@+id/urlInputLayout" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="nameInputLayout,urlInputLayout,authenticateButton"
+        app:flow_verticalBias="0.5"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
