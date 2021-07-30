@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myvideocallapp.videocall.list.PeerAdapter
 
-const val BUNDLE_AUTH_TOKEN = "100msauthkey"
+const val BUNDLE_AUTH_TOKEN = "100ms-auth-token-bundle-key"
 
 class VideoCallActivity : AppCompatActivity() {
     private val TAG = VideoCallActivity::class.java.simpleName
