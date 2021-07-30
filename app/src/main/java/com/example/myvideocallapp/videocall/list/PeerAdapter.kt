@@ -16,12 +16,10 @@ class PeerAdapter : ListAdapter<TrackPeerMap, PeerViewHolder>(DIFFUTIL_CALLBACK)
                 newItem: TrackPeerMap
             ) = oldItem.peer.peerID == newItem.peer.peerID
 
-
             override fun areContentsTheSame(
                 oldItem: TrackPeerMap,
                 newItem: TrackPeerMap
-            ) =
-                oldItem == newItem
+            ) = oldItem == newItem
         }
     }
 
