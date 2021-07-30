@@ -1,6 +1,5 @@
 package com.example.myvideocallapp.videocall.list
 
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +31,17 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
         }
     }
 
+    fun stopSurfaceView() {
+        itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
+
+            if (sinkAdded && adapterPosition != -1) {
+                getItem(adapterPosition).videoTrack?.removeSink(this)
+            }
+            release()
+            sinkAdded = false
+        }
+    }
+
     fun bind(peer: TrackPeerMap) {
         if (!sinkAdded) {
             itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
@@ -45,15 +55,4 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
         itemView.findViewById<TextView>(R.id.peerName).text = peer.peer.name
     }
 
-    fun stopSurfaceView() {
-        Log.d(TAG, "UNbinding")
-        itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
-
-            if (sinkAdded && adapterPosition != -1) {
-                getItem(adapterPosition).videoTrack?.removeSink(this)
-            }
-            release()
-            sinkAdded = false
-        }
-    }
 }
