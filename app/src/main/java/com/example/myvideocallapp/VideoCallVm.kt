@@ -41,7 +41,7 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
         }
     }
 
-    private fun getCurrentRoomState(): List<TrackPeerMap> {
+    private fun getCurrentParticipants(): List<TrackPeerMap> {
         // Convert all the peers into a map of them and their tracks.
         val trackAndPeerMap = hmsSdk.getPeers().flatMap {
             val screenShare = it.auxiliaryTracks.find { auxTrack -> auxTrack is HMSVideoTrack }
@@ -61,15 +61,15 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
     }
 
     override fun onJoin(room: HMSRoom) {
-        _videoCallParticipants.postValue(getCurrentRoomState())
+        _videoCallParticipants.postValue(getCurrentParticipants())
     }
 
     override fun onTrackUpdate(type: HMSTrackUpdate, track: HMSTrack, peer: HMSPeer) {
-        _videoCallParticipants.postValue(getCurrentRoomState())
+        _videoCallParticipants.postValue(getCurrentParticipants())
     }
 
     override fun onPeerUpdate(type: HMSPeerUpdate, peer: HMSPeer) {
-        _videoCallParticipants.postValue(getCurrentRoomState())
+        _videoCallParticipants.postValue(getCurrentParticipants())
     }
 
     override fun onMessageReceived(message: HMSMessage) {}
