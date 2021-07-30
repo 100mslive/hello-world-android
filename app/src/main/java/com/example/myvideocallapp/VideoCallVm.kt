@@ -56,10 +56,6 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
     }
 
 
-    override fun onError(error: HMSException) {
-        Log.d(TAG, "Error $error")
-    }
-
     override fun onJoin(room: HMSRoom) {
         _videoCallParticipants.postValue(getCurrentParticipants())
     }
@@ -75,5 +71,7 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
     override fun onMessageReceived(message: HMSMessage) {}
     override fun onRoleChangeRequest(request: HMSRoleChangeRequest) {}
     override fun onRoomUpdate(type: HMSRoomUpdate, hmsRoom: HMSRoom) {}
-
+    override fun onError(error: HMSException) {
+        Log.d(TAG, "Error $error")
+    }
 }
