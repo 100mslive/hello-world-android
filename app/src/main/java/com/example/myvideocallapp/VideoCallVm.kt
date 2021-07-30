@@ -41,21 +41,6 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
         }
     }
 
-    private fun getCurrentParticipants(): List<TrackPeerMap> {
-        // Convert all the peers into a map of them and their tracks.
-        val trackAndPeerMap = hmsSdk.getPeers().flatMap {
-            val screenShare = it.auxiliaryTracks.find { auxTrack -> auxTrack is HMSVideoTrack }
-            if (screenShare is HMSVideoTrack) {
-                listOf(TrackPeerMap(it.videoTrack, it), TrackPeerMap(screenShare, it))
-            } else {
-                listOf(TrackPeerMap(it.videoTrack, it))
-            }
-        }
-
-        return trackAndPeerMap
-    }
-
-
     override fun onJoin(room: HMSRoom) {
         _videoCallParticipants.postValue(getCurrentParticipants())
     }
@@ -73,5 +58,19 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
     override fun onRoomUpdate(type: HMSRoomUpdate, hmsRoom: HMSRoom) {}
     override fun onError(error: HMSException) {
         Log.d(TAG, "Error $error")
+    }
+
+    private fun getCurrentParticipants(): List<TrackPeerMap> {
+        // Convert all the peers into a map of them and their tracks.
+        val trackAndPeerMap = hmsSdk.getPeers().flatMap {
+            val screenShare = it.auxiliaryTracks.find { auxTrack -> auxTrack is HMSVideoTrack }
+            if (screenShare is HMSVideoTrack) {
+                listOf(TrackPeerMap(it.videoTrack, it), TrackPeerMap(screenShare, it))
+            } else {
+                listOf(TrackPeerMap(it.videoTrack, it))
+            }
+        }
+
+        return trackAndPeerMap
     }
 }
