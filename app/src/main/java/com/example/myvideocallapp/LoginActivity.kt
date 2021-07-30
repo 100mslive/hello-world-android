@@ -19,10 +19,6 @@ class LoginActivity : AppCompatActivity() {
             launchVideoRoomActivity(authToken)
         })
 
-        vm.loading.observe(this, { isLoading ->
-            setLoading(isLoading)
-        })
-
         vm.error.observe(this, { error -> showError(error) })
 
         findViewById<Button>(R.id.authenticateButton).setOnClickListener {
@@ -37,10 +33,6 @@ class LoginActivity : AppCompatActivity() {
                 putExtra(BUNDLE_AUTH_TOKEN, authToken)
             })
         }
-    }
-
-    private fun setLoading(isLoading : Boolean) {
-
     }
 
     private fun showError(error : String?) {
