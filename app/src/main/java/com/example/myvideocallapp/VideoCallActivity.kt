@@ -14,6 +14,7 @@ const val BUNDLE_AUTH_TOKEN = "100ms-auth-token-bundle-key"
 class VideoCallActivity : AppCompatActivity() {
     private val TAG = VideoCallActivity::class.java.simpleName
     private val peerAdapter = PeerAdapter()
+    private val NUM_PEERS_PER_ROW = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,7 @@ class VideoCallActivity : AppCompatActivity() {
         }
 
         findViewById<RecyclerView>(R.id.recyclerView).apply {
-            layoutManager = GridLayoutManager(this@VideoCallActivity, 2)
+            layoutManager = GridLayoutManager(this@VideoCallActivity, NUM_PEERS_PER_ROW)
             adapter = peerAdapter
         }
 
