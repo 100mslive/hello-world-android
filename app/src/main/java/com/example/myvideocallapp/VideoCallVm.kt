@@ -23,8 +23,8 @@ data class TrackPeerMap(
 class VideoCallVm(authToken: String?, application: Application) : AndroidViewModel(application),
     HMSUpdateListener {
 
-    private val _roomState = MutableLiveData<List<TrackPeerMap>>(emptyList())
-    val videoCallParticipants: LiveData<List<TrackPeerMap>> = _roomState
+    private val _videoCallParticipants = MutableLiveData<List<TrackPeerMap>>(emptyList())
+    val videoCallParticipants: LiveData<List<TrackPeerMap>> = _videoCallParticipants
 
     private val TAG = "VideoCallVm"
 
@@ -61,15 +61,15 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
     }
 
     override fun onJoin(room: HMSRoom) {
-        _roomState.postValue(getCurrentRoomState())
+        _videoCallParticipants.postValue(getCurrentRoomState())
     }
 
     override fun onTrackUpdate(type: HMSTrackUpdate, track: HMSTrack, peer: HMSPeer) {
-        _roomState.postValue(getCurrentRoomState())
+        _videoCallParticipants.postValue(getCurrentRoomState())
     }
 
     override fun onPeerUpdate(type: HMSPeerUpdate, peer: HMSPeer) {
-        _roomState.postValue(getCurrentRoomState())
+        _videoCallParticipants.postValue(getCurrentRoomState())
     }
 
     override fun onMessageReceived(message: HMSMessage) {}
