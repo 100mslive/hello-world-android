@@ -18,12 +18,12 @@ class LoginViewModel : ViewModel() {
     val authToken = MutableLiveData<String?>(null)
     val error = MutableLiveData<String?>(null)
 
-    fun authenticate(url : String, name : String) {
+    fun authenticate(url: String) {
         viewModelScope.launch {
             try {
                 val token = getAuthToken(url) // then launch the other activity.
                 authToken.postValue(token)
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 error.postValue(e.message)
                 Log.d(TAG, "An error occurred while getting the auth token $e")
             }
