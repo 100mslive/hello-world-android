@@ -1,7 +1,6 @@
 package com.example.myvideocallapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -34,14 +33,8 @@ class VideoCallActivity : AppCompatActivity() {
             adapter = peerAdapter
         }
 
-        vm.roomState.observe(this, {
-            when (it) {
-                RoomState.Loading -> Log.d(TAG, "is loading")
-                is RoomState.Joined -> {
-//                    Log.d(TAG, "peers are ${it.peers.fold("") { msg, peer -> msg + peer.name }}")
-                    peerAdapter.submitList(it.peerTracks)
-                }
-            }
+        vm.videoCallParticipants.observe(this, {
+            peerAdapter.submitList(it)
         })
     }
 }

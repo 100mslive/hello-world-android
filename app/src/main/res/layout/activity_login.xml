@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.5"
-        app:placeholderText="Name">
+        android:hint="Name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/nameInputEditText"
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="@+id/nameInputLayout"
         app:layout_constraintTop_toBottomOf="@+id/nameInputLayout"
-        app:placeholderText="Name">
+        android:hint="Meeting Url">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/urlInputEditText"
