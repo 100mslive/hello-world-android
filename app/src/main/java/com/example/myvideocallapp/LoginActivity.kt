@@ -13,7 +13,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        findViewById<TextInputEditText>(R.id.urlInputEditText).setText("https://aniket.app.100ms.live/meeting/snippy-purple-mouse")
 
         val vm : LoginViewModel by viewModels()
 
