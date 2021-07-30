@@ -20,12 +20,13 @@ class VideoCallActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video_call)
-        val key = intent?.extras?.getString(BUNDLE_AUTH_TOKEN)
+        val authToken = intent?.extras?.getString(BUNDLE_AUTH_TOKEN)
+        val name = intent?.extras?.getString(BUNDLE_NAME)
 
         val vm: VideoCallVm by viewModels {
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                    return VideoCallVm(key, application) as T
+                    return VideoCallVm(name, authToken, application) as T
                 }
             }
         }

@@ -20,7 +20,8 @@ data class TrackPeerMap(
     val peer: HMSPeer
 )
 
-class VideoCallVm(authToken: String?, application: Application) : AndroidViewModel(application),
+class VideoCallVm(name: String?, authToken: String?, application: Application) :
+    AndroidViewModel(application),
     HMSUpdateListener {
 
     private val _videoCallParticipants = MutableLiveData<List<TrackPeerMap>>(emptyList())
@@ -33,11 +34,11 @@ class VideoCallVm(authToken: String?, application: Application) : AndroidViewMod
         .build()
 
     init {
-        if (authToken != null) {
+        if (authToken != null && name != null) {
             Log.d(TAG, "Joining with $authToken")
-            hmsSdk.join(HMSConfig("name", authToken), this)
+            hmsSdk.join(HMSConfig(name, authToken), this)
         } else {
-            Log.e(TAG, "There was an error since the auth token was null.")
+            Log.e(TAG, "Neither auth token nor name can be null.")
         }
     }
 
