@@ -33,11 +33,6 @@ class PeerAdapter : ListAdapter<TrackPeerMap, PeerViewHolder>(DIFFUTIL_CALLBACK)
         getItem(position)?.let { holder.bind(it) }
     }
 
-    override fun onViewAttachedToWindow(holder: PeerViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        holder.startSurfaceView()
-    }
-
     override fun onViewDetachedFromWindow(holder: PeerViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.stopSurfaceView()
