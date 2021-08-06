@@ -14,12 +14,13 @@ class PeerAdapter : ListAdapter<TrackPeerMap, PeerViewHolder>(DIFFUTIL_CALLBACK)
             override fun areItemsTheSame(
                 oldItem: TrackPeerMap,
                 newItem: TrackPeerMap
-            ) = oldItem.peer.peerID == newItem.peer.peerID
+            ) = oldItem.peer.peerID == newItem.peer.peerID &&
+                    oldItem.videoTrack?.trackId == newItem.videoTrack?.trackId
 
             override fun areContentsTheSame(
                 oldItem: TrackPeerMap,
                 newItem: TrackPeerMap
-            ) = oldItem == newItem
+            ) = oldItem.videoTrack?.isMute == newItem.videoTrack?.isMute
         }
     }
 
@@ -30,7 +31,15 @@ class PeerAdapter : ListAdapter<TrackPeerMap, PeerViewHolder>(DIFFUTIL_CALLBACK)
     }
 
     override fun onBindViewHolder(holder: PeerViewHolder, position: Int) {
-        getItem(position)?.let { holder.bind(it) }
+        getItem(position)?.let {
+            holder.stopSurfaceView()
+            holder.bind(it)
+        }
+    }
+
+    override fun onViewAttachedToWindow(holder: PeerViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.startSurfaceView()
     }
 
     override fun onViewDetachedFromWindow(holder: PeerViewHolder) {
@@ -38,8 +47,4 @@ class PeerAdapter : ListAdapter<TrackPeerMap, PeerViewHolder>(DIFFUTIL_CALLBACK)
         holder.stopSurfaceView()
     }
 
-    override fun onViewRecycled(holder: PeerViewHolder) {
-        super.onViewRecycled(holder)
-        holder.stopSurfaceView()
-    }
 }

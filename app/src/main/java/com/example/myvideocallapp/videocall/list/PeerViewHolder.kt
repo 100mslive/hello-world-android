@@ -21,28 +21,43 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
         }
     }
 
+    fun startSurfaceView() {
+        if (!sinkAdded) {
+            itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
+
+                getItem(adapterPosition).videoTrack?.let { hmsVideoTrack ->
+                    init(SharedEglContext.context, null)
+                    hmsVideoTrack.addSink(this)
+                    sinkAdded = true
+                }
+            }
+        }
+    }
+
     fun stopSurfaceView() {
+        // If the sink was added, AND there was a video
+        //  then remove the sink and release
         itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
 
             if (sinkAdded && adapterPosition != -1) {
-                getItem(adapterPosition).videoTrack?.removeSink(this)
+                getItem(adapterPosition).videoTrack?.let {
+                    it.removeSink(this)
+                    release()
+                    sinkAdded = false
+                }
             }
-            release()
-            sinkAdded = false
         }
     }
 
     fun bind(peer: TrackPeerMap) {
+
         if (!sinkAdded) {
             itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
-                peer.videoTrack?.let { hmsVideoTrack ->
-                    init(SharedEglContext.context, null)
-                    sinkAdded = true
-                    hmsVideoTrack.addSink(this)
-                }
+                setEnableHardwareScaler(true)
+                setScalingType(RendererCommon.ScalingType.SCALE_ASPECT_FIT)
+                sinkAdded = false
             }
         }
-
         itemView.findViewById<TextView>(R.id.peerName).text = peer.peer.name
     }
 
