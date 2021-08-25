@@ -62,4 +62,8 @@ dependencies {
     // 100ms
     implementation 'com.github.100mslive:android-sdk:2.0.6'
     implementation 'org.webrtc:google-webrtc:1.0.32006'
+
+    // Android permissions
+    implementation 'pub.devrel:easypermissions:1.1.3'
+
 }
