@@ -14,6 +14,7 @@ import live.hms.video.sdk.models.*
 import live.hms.video.sdk.models.enums.HMSPeerUpdate
 import live.hms.video.sdk.models.enums.HMSRoomUpdate
 import live.hms.video.sdk.models.enums.HMSTrackUpdate
+import live.hms.video.sdk.models.trackchangerequest.HMSChangeTrackStateRequest
 
 data class TrackPeerMap(
     val videoTrack: HMSVideoTrack?,
@@ -55,8 +56,10 @@ class VideoCallVm(name: String?, authToken: String?, application: Application) :
     }
 
     override fun onMessageReceived(message: HMSMessage) {}
-    override fun onRoleChangeRequest(request: HMSRoleChangeRequest) {}
+    override fun onRoleChangeRequest(request: HMSRoleChangeRequest) { TODO("Not yet implemented, look at the advanced sample app for details") }
     override fun onRoomUpdate(type: HMSRoomUpdate, hmsRoom: HMSRoom) {}
+    override fun onChangeTrackStateRequest(details: HMSChangeTrackStateRequest) { TODO("Not yet implemented, look at the advanced sample app for details") }
+
     override fun onError(error: HMSException) {
         Log.d(TAG, "Error $error")
     }
