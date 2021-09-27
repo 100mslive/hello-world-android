@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myvideocallapp.videocall.list.PeerAdapter
+import live.hms.video.sdk.models.HMSMessage
 
 const val BUNDLE_AUTH_TOKEN = "100ms-auth-token-bundle-key"
 const val BUNDLE_NAME = "100ms-user-name-bundle-key"
@@ -42,13 +43,16 @@ class VideoCallActivity : AppCompatActivity() {
         })
 
         vm.receivedMessages.observe(this, {
-            if(it != null && it.size > 0) {
-                Toast.makeText(
-                    this,
-                    "Total messages ${it.size}, last: ${it.lastOrNull()?.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            showMessages(it)
         })
+    }
+
+    private fun showMessages(chatMessages : List<HMSMessage>?) {
+        if(!chatMessages.isNullOrEmpty()) {
+            Toast.makeText(this,
+                "Total messages ${chatMessages.size}, last: ${chatMessages.lastOrNull()?.message}",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 }
