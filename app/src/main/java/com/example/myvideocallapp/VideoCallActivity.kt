@@ -1,6 +1,7 @@
 package com.example.myvideocallapp
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
@@ -38,6 +39,16 @@ class VideoCallActivity : AppCompatActivity() {
 
         vm.videoCallParticipants.observe(this, {
             peerAdapter.submitList(it)
+        })
+
+        vm.receivedMessages.observe(this, {
+            if(it != null && it.size > 0) {
+                Toast.makeText(
+                    this,
+                    "Total messages ${it.size}, last: ${it.lastOrNull()?.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         })
     }
 }

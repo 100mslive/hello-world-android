@@ -27,6 +27,8 @@ class VideoCallVm(name: String?, authToken: String?, application: Application) :
 
     private val _videoCallParticipants = MutableLiveData<List<TrackPeerMap>>(emptyList())
     val videoCallParticipants: LiveData<List<TrackPeerMap>> = _videoCallParticipants
+    private val _receivedMessages : MutableLiveData<List<HMSMessage>> = MutableLiveData(emptyList())
+    val receivedMessages : LiveData<List<HMSMessage>> = _receivedMessages
 
     private val TAG = "VideoCallVm"
 
@@ -55,7 +57,12 @@ class VideoCallVm(name: String?, authToken: String?, application: Application) :
         _videoCallParticipants.postValue(getCurrentParticipants())
     }
 
-    override fun onMessageReceived(message: HMSMessage) {}
+    override fun onMessageReceived(message: HMSMessage) {
+        // Being careful to create a new list with `plus`
+        //  because mutating a livedata value can result it not sending updates
+        //  to the observer.
+        _receivedMessages.postValue(receivedMessages.value!!.plus(message))
+    }
     override fun onRoleChangeRequest(request: HMSRoleChangeRequest) { TODO("Not yet implemented, look at the advanced sample app for details") }
     override fun onRoomUpdate(type: HMSRoomUpdate, hmsRoom: HMSRoom) {}
     override fun onChangeTrackStateRequest(details: HMSChangeTrackStateRequest) { TODO("Not yet implemented, look at the advanced sample app for details") }
