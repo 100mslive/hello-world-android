@@ -1,4 +1,4 @@
-# hello-world-android
+# hello-world-android [![Android CI](https://github.com/100mslive/hello-world-android/actions/workflows/android.yml/badge.svg)](https://github.com/100mslive/hello-world-android/actions/workflows/android.yml)
 The bare minimum required to get a video call working end to end.
 
 ## Feature Demos:
