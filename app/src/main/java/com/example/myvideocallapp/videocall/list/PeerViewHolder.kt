@@ -49,7 +49,7 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
         }
     }
 
-    fun bind(peer: TrackPeerMap) {
+    fun bind(trackPeerMap: TrackPeerMap) {
 
         if (!sinkAdded) {
             itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
@@ -58,7 +58,7 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
                 sinkAdded = false
             }
         }
-        itemView.findViewById<TextView>(R.id.peerName).text = peer.peer.name
+        itemView.findViewById<TextView>(R.id.peerName).text = trackPeerMap.peer.name
     }
 
 }
