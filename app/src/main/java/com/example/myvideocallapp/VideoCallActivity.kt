@@ -23,14 +23,7 @@ class VideoCallActivity : AppCompatActivity() {
         val authToken = intent?.extras?.getString(BUNDLE_AUTH_TOKEN)
         val name = intent?.extras?.getString(BUNDLE_NAME)
 
-        val vm: VideoCallVm by viewModels {
-            object : ViewModelProvider.Factory {
-
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return VideoCallVm(name, authToken, application) as T
-                }
-            }
-        }
+        val vm: VideoCallVm by viewModels { VideoCallViewModelFactory(name, authToken, application) }
 
         findViewById<RecyclerView>(R.id.recyclerView).apply {
             layoutManager = GridLayoutManager(this@VideoCallActivity, NUM_PEERS_PER_ROW)
