@@ -12,7 +12,7 @@ import pub.devrel.easypermissions.EasyPermissions
 
 class LoginActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
-    val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+    private val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
     private val RC_CALL = 111
 
     override fun onCreate(savedInstanceState: Bundle?) {

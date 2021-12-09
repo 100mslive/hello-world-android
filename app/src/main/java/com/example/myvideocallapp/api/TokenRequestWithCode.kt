@@ -1,7 +1,6 @@
 package com.example.myvideocallapp.api
 
 import com.google.gson.annotations.SerializedName
-import java.net.URI
 import java.util.*
 
 data class TokenRequestWithCode constructor(

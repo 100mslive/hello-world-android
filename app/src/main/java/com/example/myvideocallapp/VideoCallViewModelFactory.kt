@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 
-class VideoCallViewModelFactory(val name : String?, val authToken : String?, val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
+class VideoCallViewModelFactory(val name : String?, private val authToken : String?, private val application: Application) : ViewModelProvider.AndroidViewModelFactory(application) {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if( modelClass.isAssignableFrom(VideoCallVm::class.java) ) {
             return VideoCallVm(name, authToken, application) as T

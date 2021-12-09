@@ -16,7 +16,6 @@
         />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/loading"
         android:layout_marginEnd="182dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
