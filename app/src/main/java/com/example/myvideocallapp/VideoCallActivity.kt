@@ -25,7 +25,8 @@ class VideoCallActivity : AppCompatActivity() {
 
         val vm: VideoCallVm by viewModels {
             object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return VideoCallVm(name, authToken, application) as T
                 }
             }
