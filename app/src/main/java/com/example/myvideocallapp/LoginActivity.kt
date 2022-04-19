@@ -21,11 +21,11 @@ class LoginActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
         val vm: LoginViewModel by viewModels()
 
-        vm.authToken.observe(this, { authToken ->
+        vm.authToken.observe(this) { authToken ->
             launchVideoRoomActivity(authToken)
-        })
+        }
 
-        vm.error.observe(this, { error -> showError(error) })
+        vm.error.observe(this) { error -> showError(error) }
 
         findViewById<Button>(R.id.authenticateButton).setOnClickListener {
             val meetingLink = findViewById<TextInputEditText>(R.id.urlInputEditText).text.toString()
