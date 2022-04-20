@@ -6,7 +6,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import live.hms.video.error.HMSException
+import live.hms.video.media.tracks.HMSAudioTrack
 import live.hms.video.media.tracks.HMSTrack
+import live.hms.video.media.tracks.HMSTrackSource
 import live.hms.video.media.tracks.HMSVideoTrack
 import live.hms.video.sdk.HMSSDK
 import live.hms.video.sdk.HMSUpdateListener
@@ -25,8 +27,8 @@ class VideoCallVm(name: String?, authToken: String?, application: Application) :
     AndroidViewModel(application),
     HMSUpdateListener {
 
-    private val _videoCallParticipants = MutableLiveData<List<TrackPeerMap>>(emptyList())
-    val videoCallParticipants: LiveData<List<TrackPeerMap>> = _videoCallParticipants
+    private val _videoCallParticipants = MutableLiveData<List<Track>>(emptyList())
+    val videoCallParticipants: LiveData<List<Track>> = _videoCallParticipants
 
     private val TAG = "VideoCallVm"
 
@@ -64,14 +66,35 @@ class VideoCallVm(name: String?, authToken: String?, application: Application) :
         Log.d(TAG, "Error $error")
     }
 
-    private fun getCurrentParticipants(): List<TrackPeerMap> {
+    data class PeerRepresentation(
+        val peer : HMSPeer,
+        val type : Track
+    )
+
+    sealed class Track() {
+        abstract val peer : HMSPeer
+        sealed class Videotrack() : Track() {
+            abstract val videoTrack: HMSVideoTrack
+            data class ScreenShare(override val videoTrack: HMSVideoTrack, override val peer : HMSPeer) : Videotrack()
+            data class Video(override val videoTrack: HMSVideoTrack, override val peer : HMSPeer) : Videotrack()
+        }
+        data class AudioTrack(val audioTrack : HMSAudioTrack, override val peer: HMSPeer) : Track()
+    }
+
+    private fun getCurrentParticipants(): List<Track> {
+        // Actually all you need is
+
         // Convert all the peers into a map of them and their tracks.
-        val trackAndPeerMap = hmsSdk.getPeers().flatMap {
-            val screenShare = it.auxiliaryTracks.find { auxTrack -> auxTrack is HMSVideoTrack }
-            if (screenShare is HMSVideoTrack) {
-                listOf(TrackPeerMap(it.videoTrack, it), TrackPeerMap(screenShare, it))
-            } else {
-                listOf(TrackPeerMap(it.videoTrack, it))
+        val trackAndPeerMap = hmsSdk.getPeers().flatMap { peer ->
+
+            peer.getAllTracks()
+                .filterIsInstance<HMSVideoTrack>()
+                .mapNotNull { track ->
+                if (track.source == HMSTrackSource.SCREEN) {
+                    Track.Videotrack.ScreenShare(track, peer)
+                } else if (track.source == HMSTrackSource.REGULAR) {
+                    Track.Videotrack.Video(track, peer)
+                } else null
             }
         }
 

@@ -5,11 +5,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myvideocallapp.R
 import com.example.myvideocallapp.TrackPeerMap
+import com.example.myvideocallapp.VideoCallVm
 import live.hms.video.utils.SharedEglContext
 import org.webrtc.RendererCommon
 import org.webrtc.SurfaceViewRenderer
 
-class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
+class PeerViewHolder(view: View, private val getItem: (Int) -> VideoCallVm.Track) :
     RecyclerView.ViewHolder(view) {
     private val TAG = PeerViewHolder::class.java.simpleName
     private var sinkAdded = false
@@ -25,10 +26,15 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
         if (!sinkAdded) {
             itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
 
-                getItem(adapterPosition).videoTrack?.let { hmsVideoTrack ->
-                    init(SharedEglContext.context, null)
-                    hmsVideoTrack.addSink(this)
-                    sinkAdded = true
+                val item = getItem(adapterPosition)
+                when(item) {
+                    is VideoCallVm.Track.AudioTrack -> {} // Ignore audio tracks
+                    // Screenshare and videos are treated the same
+                    is VideoCallVm.Track.Videotrack -> {
+                        init(SharedEglContext.context, null)
+                        item.videoTrack.addSink(this)
+                        sinkAdded = true
+                    }
                 }
             }
         }
@@ -40,8 +46,9 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
         itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {
 
             if (sinkAdded && adapterPosition != -1) {
-                getItem(adapterPosition).videoTrack?.let {
-                    it.removeSink(this)
+                val item = getItem(adapterPosition)
+                if(item is VideoCallVm.Track.Videotrack) {
+                    item.videoTrack.removeSink(this)
                     release()
                     sinkAdded = false
                 }
@@ -49,7 +56,7 @@ class PeerViewHolder(view: View, private val getItem: (Int) -> TrackPeerMap) :
         }
     }
 
-    fun bind(trackPeerMap: TrackPeerMap) {
+    fun bind(trackPeerMap: VideoCallVm.Track) {
 
         if (!sinkAdded) {
             itemView.findViewById<SurfaceViewRenderer>(R.id.videoSurfaceView).apply {

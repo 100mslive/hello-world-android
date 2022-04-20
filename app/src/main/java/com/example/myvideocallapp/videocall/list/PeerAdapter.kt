@@ -6,21 +6,31 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.myvideocallapp.R
 import com.example.myvideocallapp.TrackPeerMap
+import com.example.myvideocallapp.VideoCallVm
+import live.hms.video.media.tracks.HMSAudioTrack
 
-class PeerAdapter : ListAdapter<TrackPeerMap, PeerViewHolder>(DIFFUTIL_CALLBACK) {
+class PeerAdapter : ListAdapter<VideoCallVm.Track, PeerViewHolder>(DIFFUTIL_CALLBACK) {
 
     companion object {
-        val DIFFUTIL_CALLBACK = object : DiffUtil.ItemCallback<TrackPeerMap>() {
+        val DIFFUTIL_CALLBACK = object : DiffUtil.ItemCallback<VideoCallVm.Track>() {
             override fun areItemsTheSame(
-                oldItem: TrackPeerMap,
-                newItem: TrackPeerMap
+                oldItem: VideoCallVm.Track,
+                newItem: VideoCallVm.Track
             ) = oldItem.peer.peerID == newItem.peer.peerID &&
-                    oldItem.videoTrack?.trackId == newItem.videoTrack?.trackId
+                    if(oldItem is VideoCallVm.Track.AudioTrack && newItem is VideoCallVm.Track.AudioTrack) {
+                        oldItem.audioTrack.trackId == newItem.audioTrack.trackId
+                    } else if (oldItem is VideoCallVm.Track.Videotrack.Video && newItem is VideoCallVm.Track.Videotrack.Video) {
+                        oldItem.videoTrack.trackId == newItem.videoTrack.trackId
+                    } else false
 
             override fun areContentsTheSame(
-                oldItem: TrackPeerMap,
-                newItem: TrackPeerMap
-            ) = oldItem.videoTrack?.isMute == newItem.videoTrack?.isMute
+                oldItem: VideoCallVm.Track,
+                newItem: VideoCallVm.Track
+            ) = if(oldItem is VideoCallVm.Track.AudioTrack && newItem is VideoCallVm.Track.AudioTrack) {
+                oldItem.audioTrack.isMute == newItem.audioTrack.isMute
+            } else if (oldItem is VideoCallVm.Track.Videotrack.Video && newItem is VideoCallVm.Track.Videotrack.Video) {
+                oldItem.videoTrack.isMute == newItem.videoTrack.isMute
+            } else false
         }
     }
 
