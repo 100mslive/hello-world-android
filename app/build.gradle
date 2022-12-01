@@ -60,7 +60,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
 
     // 100ms
-    implementation 'com.github.100mslive.android-sdk:lib:2.5.0'
+    implementation 'com.github.100mslive.android-sdk:lib:2.5.1'
 
     // Android permissions
     implementation 'pub.devrel:easypermissions:3.0.0'
